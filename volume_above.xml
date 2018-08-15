@@ -1,0 +1,11 @@
+<sensei>
+  <analysis type="python" script_file="volume_above_sm.py" enabled="1">
+    <initialize_source>
+threshold=0.4
+mesh='mesh'
+array='data'
+cen=1
+out_file='volume_above.png'
+     </initialize_source>
+  </analysis>
+</sensei>
