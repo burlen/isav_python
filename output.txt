@@ -1,0 +1,5 @@
+nid00139:/global/cscratch1/sd/loring/sensei-2018/isav_python$time srun -n 256 oscillator -b 256 -t 0.05 -s 2048,2048,1 -f ./volume_above.xml ./random_2d_2048.osc 
+STATUS: [0][/usr/common/software/sensei/sensei/build/sensei/sensei/sensei/ConfigurableAnalysis.cxx:694][v2.0.0-60-gf3ddd21]
+STATUS: Configured python with file "volume_above_sm.py"
+Started
+Total run time: 209.368 s
