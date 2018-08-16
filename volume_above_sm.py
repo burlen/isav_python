@@ -7,9 +7,9 @@ threshold = 0.5
 mesh = ''
 array = ''
 cen = vtkDataObject.POINT
-out_file = 'volume_above.png'
+out_file = 'area_above.png'
 times = []
-volume_above = []
+area_above = []
 
 def pt_centered(c):
   return c == vtkDataObject.POINT
@@ -21,8 +21,8 @@ def Execute(adaptor):
   adaptor.AddGhostCellsArray(dobj, mesh)
   time = adaptor.GetDataTime()
 
-  # compute volume above over local blocks
-  vol = 0.
+  # compute area above over local blocks
+  area = 0.
   it = dobj.NewIterator()
   while not it.IsDoneWithTraversal():
     # get the local data block and its props
@@ -39,25 +39,25 @@ def Execute(adaptor):
     ghost = vtk_to_numpy(atts.GetArray('vtkGhostType'))
     ghost.shape = data.shape = (dim[1], dim[0])
 
-    # compute the volume above
+    # compute the area above
     ii = np.where((data > threshold) & (ghost == 0))
-    vol += len(ii[0])*np.prod(blk.GetSpacing())
+    area += len(ii[0])*np.prod(blk.GetSpacing())
 
     it.GoToNextItem()
 
-  # compute global volume
-  vol = comm.reduce(vol, root=0, op=MPI.SUM)
+  # compute global area
+  area = comm.reduce(area, root=0, op=MPI.SUM)
 
   # rank zero writes the result
   if comm.Get_rank() == 0:
     times.append(time)
-    volume_above.append(vol)
+    area_above.append(area)
 
 def Finalize():
   if comm.Get_rank() == 0:
-    plt.plot(times, volume_above, 'b-', linewidth=2)
+    plt.plot(times, area_above, 'b-', linewidth=2)
     plt.xlabel('time')
-    plt.ylabel('volume')
-    plt.title('Volume Above %0.2f'%(threshold))
+    plt.ylabel('area')
+    plt.title('Area Above %0.2f'%(threshold))
     plt.savefig(out_file)
   return 0
