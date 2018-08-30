@@ -1,0 +1,4 @@
+<sensei>
+  <analysis type="catalyst" pipeline="pythonscript"
+    filename="input_data.py" enabled="1" />
+</sensei>
